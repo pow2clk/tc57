@@ -180,8 +180,9 @@ expression may produce either an lvalue or a prvalue; otherwise it produces a
 prvalue.
 
 \p If the postfix expression before the dot is an lvalue, is not a scalar, and
-the \textit{swizzle-component-sequence} contains no repeated components, the
-swizzle expression is an lvalue; otherwise it is a prvalue.
+the \textit{swizzle-component-sequence} contains no repeated nor explicit
+components (\texttt{0} or \texttt{1}), the swizzle expression is an lvalue;
+otherwise it is a prvalue.
 
 \Sub{Vector Swizzle}{Expr.Post.Swizzle.Vector}
 
@@ -192,11 +193,18 @@ swizzle expression is an lvalue; otherwise it is a prvalue.
 
   \define{swizzle-component-sequence-rgba}\br
   swizzle-component-rgba\br
+  swizzle-component-explicit\br
   swizzle-component-sequence-rgba swizzle-component-rgba\br
+  swizzle-component-sequence-rgba swizzle-component-explicit\br
 
   \define{swizzle-component-sequence-xyzw}\br
   swizzle-component-xyzw\br
+  swizzle-component-explicit\br
   swizzle-component-sequence-xyzw swizzle-component-xyzw\br
+  swizzle-component-sequence-xyzw swizzle-component-explicit\br
+
+  \define{swizzle-component-explicit} \textnormal{one of}\br
+  \terminal{0 1}\br
 
   \define{swizzle-component-rgba} \textnormal{one of}\br
   \terminal{r g b a}\br
@@ -205,16 +213,18 @@ swizzle expression is an lvalue; otherwise it is a prvalue.
   \terminal{x y z w}
 \end{grammar}
 
-\p A \textit{vector-swizzle-component-sequence} is a sequence of one or more
-swizzle components of either the \textit{swizzle-component-rgba} or
-\textit{swizzle-component-xyzw} forms; the two forms may not be mixed in the
-same \textit{vector-swizzle-component-sequence}. The type of a swizzle
-expression is a vector of the same element type as the vector postfix
-expression or type of the scalar postfix expression before the dot, with a
-number of elements equal to the number of components in the
-\textit{vector-swizzle-component-sequence}.
+\p A \textit{vector-swizzle-component-sequence} consists of one or more
+\textit{indexing vector swizzle components}, the \textit{swizzle-component-rgba}
+or \textit{swizzle-component-xyzw} forms, and the
+\textit{explicit swizzle components}, the \textit{swizzle-component-explicit}
+form. The two indexing forms may not be mixed in the same
+\textit{vector-swizzle-component-sequence}. The type of a swizzle expression is
+a vector of the same element type as the vector postfix expression or type of
+the scalar postfix expression before the dot, with a number of elements equal to
+the number of components in the \textit{vector-swizzle-component-sequence}.
 
-\p Vector swizzle components map to elements of the vector in the following way:
+\p \textit{Indexing vector swizzle components} map to elements of the vector in
+the following way:
 
 \begin{center}
   \begin{tabular}{|| c | c | c ||}
@@ -233,6 +243,11 @@ number of elements equal to the number of components in the
 \textit{swizzle-component-sequence} refers to an element index that is out of
 range of the vector type of the postfix expression before the dot or refers any
 element index other than 0 of a scalar type.
+
+\p Explicit vector swizzle components correspond to constant values inserted
+into the corresponding element of the output vector of the same element type and
+corresponding representation of the postfix expression for the values of zero
+and one for \texttt{0} and \texttt{1} respectively.
 
 \Sub{Matrix Swizzle}{Expr.Post.Swizzle.Matrix}
 \begin{grammar}

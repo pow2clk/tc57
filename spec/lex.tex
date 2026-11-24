@@ -519,24 +519,40 @@ ill-formed.
   floating-literal \texttt{.} scalar-element-sequence
 
   \define{scalar-element-sequence}\br
-  scalar-element-sequence-x\br
-  scalar-element-sequence-r
+  \texttt{x} \opt(scalar-element-sequence-x)\br
+  \texttt{r} \opt(scalar-element-sequence-r)\br
 
   \define{scalar-element-sequence-x}\br
-  \texttt{x}\br
-  scalar-element-sequence-x \texttt{x}
+  scalar-element-x01\br
+  scalar-element-sequence-x scalar-element-r01\br
 
   \define{scalar-element-sequence-r}\br
-  \texttt{r}\br
-  scalar-element-sequence-r \texttt{r}
+  scalar-element-r01\br
+  scalar-element-sequence-r scalar-element-r01\br
+
+  \define{scalar-element-x01} \textnormal{one of}\br
+  \terminal{x 0 1}\br
+
+  \define{scalar-element-r01} \textnormal{one of}\br
+  \terminal{r 0 1}\br
+
 \end{grammar}
 
 \p A \textit{vector-literal} is an \textit{integer-literal} or
 \textit{floating-point} literal followed by a period (\texttt{.}) and a
 \textit{scalar-element-sequence}.
 
-\p A \textit{scalar-element-sequence} is a \textit{vector-swizzle-sequence}
-where only the first vector element accessor is valid (\texttt{x} or
-\texttt{r}). A \textit{scalar-element-sequence} is equivalent to a vector splat
-conversion performed on the \textit{integer-literal} or
+\p A \textit{scalar-element-sequence} is a is an \texttt{r} followed by an
+optional \textit{vector-swizzle-sequence-r} or a \texttt{x} followed by an
+optional \textit{vector-swizzle-sequence-x}. Each sequence is some combination
+of \texttt{0}, \texttt{1}, and either \texttt{r} or \texttt{x} components.
+Each \texttt{r} or \texttt{x} component refers to the value of the scalar
+literal. Explicit vector swizzle components \texttt{0} or \texttt{1} correspond
+to constant values inserted into the corresponding element of the output vector
+of the same element type and corresponding representation of the postfix
+expression for the values of zero and one for \texttt{0} and \texttt{1}
+respectively.
+
+A \textit{scalar-element-sequence} with no explicit components is equivalent to
+a vector splat conversion performed on the \textit{integer-literal} or
 \textit{floating-literal} value (\ref{Conv.vsplat}).
